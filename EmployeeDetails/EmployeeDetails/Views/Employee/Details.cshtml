@@ -1,0 +1,472 @@
+﻿@model EmployeeDetails.Models.EmployeeView
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Employee Details</title>
+    @section myStyle
+    {
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link href="~/Content/jquery-ui.theme.css" rel="stylesheet" />
+        <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    }
+
+</head>
+<body>
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row pb-3">
+                <div class="col-md-10">
+                    <h4 class="text-center h2 bg-primary text-white">Employee Registration</h4>
+                </div>
+                <div class="col-md-2">
+                    @using (Html.BeginForm("Show", "Employee", null, FormMethod.Get))
+                    {
+                        <button pull-left type="submit" class="btn btn-info float-left" style="background: #254558"> Show Employees </button>
+                    }
+                </div>
+            </div>
+            @using (Html.BeginForm("Details", "Employee", FormMethod.Post, new { id = "submitForm", enctype = "multipart/form-data" }))
+            {
+                <div class="form-group row">
+                    @Html.LabelFor(c => c.Id, new { @class = "col-md-2 col-form-label"})
+                    @Html.TextBoxFor(c => c.Id, new { @readonly = "readonly", @class = "form-control col-md-6" })
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(c => c.Name, new { @class = "col-md-2 col-form-label" })
+                    @Html.TextBoxFor(c => c.Name, new { @class = "form-control col-md-6" })
+                    @Html.ValidationMessageFor(c => c.Name, null, htmlAttributes: new { @class = "text-danger small" })
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(c => c.Age, new { @class = "col-md-2 col-form-label" })
+                    @Html.TextBoxFor(c => c.Age, new { @id = "age", @readonly = "readonly", @class = "form-control col-md-6" })
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(c => c.DOB, new { @class = "col-md-2 col-form-label" })
+                    @Html.TextBoxFor(c => c.DOB, "{0:yyyy-MM-dd}", htmlAttributes: new
+               {
+                   @id = "datepicker",
+                   @class = "form-control col-md-6"
+               })
+                    @Html.ValidationMessageFor(c => c.DOB, null, htmlAttributes: new { @class = "text-danger small" })
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(c => c.Gender, new { @class = "col-md-2 col-form-label" })
+                    <br />
+                    <label>@Html.RadioButtonFor(c => c.Gender, "Male", new { id = "radio" + Guid.NewGuid() }) Male </label>
+                    <label>@Html.RadioButtonFor(c => c.Gender, "Female", new { id = "radio" + Guid.NewGuid() }) Female </label>
+                    @Html.ValidationMessageFor(c => c.Gender, null, htmlAttributes: new { @class = "text-danger small" })
+                </div>
+                @Html.Label("Location")
+                <div class="form-group row">
+                    @Html.LabelFor(c => c.Divisions, new { @class = "col-md-2 col-form-label" })
+                    @Html.DropDownListFor(c => c.DivisionId, Model.Divisions, "Select Division", new { @id = "Division_Id", @class = "form-control col-md-6"  })
+                    @Html.ValidationMessageFor(c => c.DivisionId, null, htmlAttributes: new { @class = "text-danger small" })
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(c => c.Cities, new { @class = "col-md-2 col-form-label" })
+                    @Html.DropDownListFor(c => c.CityId, Model.Cities, "Select City", new { @class = "form-control col-md-6" })
+                    @Html.ValidationMessageFor(c => c.CityId, null, htmlAttributes: new { @class = "text-danger small" })
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(c => c.Thanas, new { @class = "col-md-2 col-form-label" })
+                    @Html.DropDownListFor(c => c.ThanaId, Model.Thanas, "Select Thana", new { @class = "form-control col-md-6" })
+                    @Html.ValidationMessageFor(c => c.ThanaId, null, htmlAttributes: new { @class = "text-danger small" })
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        @Html.LabelFor(c => c.Educations)
+                    </div>
+
+                    <div class="col-md-4">
+                        <!-- Button trigger modal to add education -->
+                        <button type="button" id="add" data-toggle="modal" data-target="#addEducation" class="btn btn-primary ">
+                            <span class="icon-plus"></span> Add
+                        </button>
+                        
+                        <!-- Modal for education form-->
+                        <div class="modal fade" id="addEducation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Education Qualification</h5>
+                                        <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="form-group">
+                                            @Html.Label("Year", htmlAttributes: new { @class = "form-control" })
+                                            <input type="number" class="form-control" id="year" name="year" placeholder="Enter year">
+                                            <span class="small text-danger" id="yrError"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.Label("Degree", htmlAttributes: new { @class = "form-control" })
+                                            <input type="text" class="form-control" id="degree" placeholder="Enter degree">
+                                            <span class="small text-danger" id="degError"></span>
+
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.Label("Board", htmlAttributes: new { @class = "form-control" })
+                                            <input type="text" class="form-control" id="board" placeholder="Enter board">
+                                            <span class="small text-danger" id="brdError"></span>
+
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.Label("Result", htmlAttributes: new { @class = "form-control" })
+                                            <input type="text" class="form-control" id="result" placeholder="Enter result">
+                                            <span class="small text-danger" id="resError"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.Label("Subject", htmlAttributes: new { @class = "form-control" })
+                                            <input type="text" class="form-control" id="subject" placeholder="Enter subject">
+                                            <span class="small text-danger" id="subError"></span>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="cancel" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-success" data-dismiss="modal" id="save">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.TextBoxFor(c=> c.ItemCount, new {@style = "visibility:hidden", @value = @Model.Educations.Count, @class = "col-md-2", @id = "item"})
+                        @Html.ValidationMessageFor(c => c.ItemCount, null, htmlAttributes: new { @class = "text-danger small" })
+
+                    </div>
+                   
+                    @*@if (ViewBag.EduError != null)
+                    {
+                        <div class="col-md-12"> <span class="small text-danger"> @ViewBag.EduError</span></div>
+                    }*@
+                </div>
+
+                <div class="row container-fluid">
+                    <table class="table-bordered col-md-12">
+                        <thead>
+                            <tr class="bg-info text-uppercase text-center h6">
+                                <th>Sl</th>
+                                <th>Year</th>
+                                <th>Degree</th>
+                                <th>Board</th>
+                                <th>Result</th>
+                                <th>Subject</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="addedEducation"></tbody>
+                    </table>
+                </div>
+                <div class="row form-group">
+                    @Html.Label("Photo Upload", htmlAttributes: new { @class = "col-md-2 col-form-label" })
+
+                    <div class="col-md-6">
+                        <input class="form-control-file" type="file" title="upload photo" accept="image/*" id="file" name="file" onchange="show(this)" />
+                    </div>
+                    <div class="col-md-4">
+                        <img id="user_img"
+                             height="100"
+                             width="90"
+                             style="border: solid" />
+                    </div>
+                    @if (ViewBag.ImgError != null)
+                    {
+                        <div class="col-md-12"> <span class="small text-warning"> @ViewBag.ImgError</span></div>
+                    }
+                </div>
+                <button type="submit" class="btn btn-success float-right">Submit</button>
+                <div class="clearfix"></div>
+
+            }
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            @if (ViewBag.Operation == "1")
+            {
+                <div class="alert alert-success" style="margin: auto">@ViewBag.Message</div>
+            }
+            @if (ViewBag.Operation == "-1")
+            {
+                <div class="alert alert-warning" style="margin: auto">@ViewBag.Message</div>
+            }
+            @if (ViewBag.Operation == "0")
+            {
+            }
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    @section myScripts
+{
+        <script src="~/Scripts/jquery-3.5.1.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/Scripts/jquery-ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                var yr = 0;
+                var deg = 0;
+                var brd = 0;
+                var res = 0;
+                var sub = 0;
+                $("#add").click(function () {
+                    $("#save").attr("disabled", true);
+                });
+                $('#year').keyup(function () {
+                    if (!$(this).val()) {
+                        yr = 0;
+                        $("#yrError").text("Please enter year");
+                    } else {
+                        $("#yrError").text(null);
+                        yr = 1;
+                    }
+                    if (yr + deg + brd + res + sub === 5) {
+                        $("#save").attr("disabled", false);
+                    } else {
+                        $("#save").attr("disabled", true);
+
+                    }
+                });
+                $('#degree').keyup(function () {
+                    if (!$(this).val()) {
+                        deg = 0;
+                        $("#degError").text("Please enter degree");
+                    } else {
+                        $("#degError").text(null);
+                        deg = 1;
+                    }
+                    if (yr + deg + brd + res + sub === 5) {
+                        $("#save").attr("disabled", false);
+                    } else {
+                        $("#save").attr("disabled", true);
+
+                    }
+                });
+                $('#board').keyup(function () {
+                    if (!$(this).val()) {
+                        brd = 0;
+                        $("#brdError").text("Please enter board");
+                    } else {
+                        $("#brdError").text(null);
+                        brd = 1;
+                    }
+                    if (yr + deg + brd + res + sub === 5) {
+                        $("#save").attr("disabled", false);
+                    } else {
+                        $("#save").attr("disabled", true);
+
+                    }
+                });
+                $('#result').keyup(function () {
+                    if (!$(this).val()) {
+                        res = 0;
+                        $("#resError").text("Please enter result");
+                    } else {
+                        $("#resError").text(null);
+                        res = 1;
+                    }
+                    if (yr + deg + brd + res + sub === 5) {
+                        $("#save").attr("disabled", false);
+                    } else {
+                        $("#save").attr("disabled", true);
+
+                    }
+                });
+                $('#subject').keyup(function () {
+                    if (!$(this).val()) {
+                        sub = 0;
+                        $("#subError").text("Please enter subject");
+                    } else {
+                        sub = 1;
+                        $("#subError").text(null);
+                    }
+                    if (yr + deg + brd + res + sub === 5) {
+                        $("#save").attr("disabled", false);
+                    } else {
+                        $("#save").attr("disabled", true);
+
+                    }
+                });
+                // date picker with animation
+                $("#datepicker").datepicker({
+                    showAnim: "slideDown",
+                    changeMonth: true,
+                    changeYear: true,
+                    maxDate: "+0M +0D"
+                });
+                $("select").each(function () {
+                    if ($(this).find("option").length <= 1) {
+                        $(this).attr("disabled", "disabled");
+                    }
+                });
+                // drop down generate
+                $("select").change(function () {
+                    var value = 0;
+                    if ($(this).val() != "") {
+                        value = $(this).val();
+                    }
+                    var id = $(this).attr("id");
+                    $.ajax({
+                        type: "POST",
+                        url: "/Employee/AjaxMethod",
+                        data: '{type: "' + id + '", value: ' + value + '}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            var list;
+                            switch (id) {
+                                case "Division_Id":
+                                    list = response.Cities;
+                                    DisableDropDown("#CityId");
+                                    PopulateDropDown("#CityId", list);
+                                    break;
+                                case "CityId":
+                                    list = response.Thanas;
+                                    DisableDropDown("#ThanaId");
+                                    PopulateDropDown("#ThanaId", list);
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                });
+                // Age calculation
+                $("#datepicker").change(function () {
+                    var age = 0;
+                    if ($(this).val() !== "") {
+                        age = $(this).val();
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Employee/AgeCalculation",
+                        data: '{dob: "' + age + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            var result = response;
+                            $("#age").val(result);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                });
+
+                var index = 0;
+                // Add Education
+                $("#save").click(function () {
+
+                    var education = GetEducationData();
+                    var educationRow = GetEducationRow(education);
+                    $("#addedEducation").append(educationRow);
+                    var item = parseInt($("#item").val());
+                    $("#item").val(item + 1);
+                    index++;
+                });
+
+                function GetEducationData() {
+                    var year = $('#year').val();
+                    var degree = $('#degree').val();
+                    var board = $('#board').val();
+                    var result = $('#result').val();
+                    var subject = $('#subject').val();
+                    $('#year').val(null);
+                    $('#degree').val(null);
+                    $('#board').val(null);
+                    $('#result').val(null);
+                    $('#subject').val(null);
+                    return { Year: year, Degree: degree, Board: board, Result: result, Subject: subject }
+                }
+
+                var sl = index;
+
+                function GetEducationRow(education) {
+
+                    var yearHidden = "<input type='hidden' name='Educations[" + index + "].Year' value='" + education.Year + "'></div>";
+                    var degreeHidden = "<input type='hidden' name='Educations[" + index + "].Degree' value='" + education.Degree + "'></div>";
+                    var boardHidden = "<input type='hidden' name='Educations[" + index + "].Board' value='" + education.Board + "'></div>";
+                    var resultHidden = "<input type='hidden' name='Educations[" + index + "].Result' value='" + education.Result + "'></div>";
+                    var subjectHidden = "<input type='hidden' name='Educations[" + index + "].Subject' value='" + education.Subject + "'></div>";
+                    var startTr = "<tr id=" + (++sl) + ">";
+                    var slCell = "<td class=' info'>" + (sl) + "</td>";
+                    var yearCell = "<td class='info'>" + yearHidden + education.Year + "</td>";
+                    var degreeCell = "<td class='info'>" + degreeHidden + education.Degree + "</td>";
+                    var boardCell = "<td class='info'>" + boardHidden + education.Board + "</td>";
+                    var resultCell = "<td class='info'>" + resultHidden + education.Result + "</td>";
+                    var subjectCell = "<td class='info'>" + subjectHidden + education.Subject + "</td>";
+                    var actionCell = "<td class='info'>" + " <button type='button'  class='btn-danger' title='Remove this row' style='background-color: red'><span class='glyphicon glyphicon-trash'></span>delete</button>" + "</td>";
+                    var endTr = "</tr>";
+                    return (startTr + slCell + yearCell + degreeCell + boardCell + resultCell + subjectCell + actionCell + endTr);
+                }
+            });
+
+            $(document).on('click',
+                'button.btn-danger',
+                function () {
+                    var r = confirm("Do you want to delete this Education Title?");
+                    if (r) {
+                        $("#item").val(parseInt($("#item").val())-1);
+                        $(this).closest('tr').remove();
+                    }
+                    return false;
+                });
+
+            function DisableDropDown(dropDownId) {
+                $(dropDownId).attr("disabled", "disabled");
+                $(dropDownId).empty().append('<option selected="selected" value="0">Please select</option>');
+            }
+
+            function PopulateDropDown(dropDownId, list) {
+                if (list != null && list.length > 0) {
+                    $(dropDownId).removeAttr("disabled");
+                    $.each(list,
+                        function () {
+                            $(dropDownId).append($("<option></option>").val(this['Value']).html(this['Text']));
+                        });
+                }
+            }
+
+            function show(input) {
+                if (input.files && input.files[0]) {
+                    var filerdr = new FileReader();
+                    filerdr.onload = function (e) {
+                        $('#user_img').attr('src', e.target.result);
+                    }
+                    filerdr.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
+    }
+
+</body>
+</html >
