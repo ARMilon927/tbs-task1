@@ -22,3 +22,15 @@ D:\Milon\EmployeeDetails\EmployeeDetails.Model\obj\Debug\EmployeeDetails.Model.c
 D:\Milon\EmployeeDetails\EmployeeDetails.Model\obj\Debug\EmployeeDetails.Model.dll
 D:\Milon\EmployeeDetails\EmployeeDetails.Model\obj\Debug\EmployeeDetails.Model.pdb
 D:\Milon\EmployeeDetails\EmployeeDetails.Model\obj\Debug\EmployeeDetails.Model.csprojAssemblyReference.cache
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\bin\Debug\EmployeeDetails.Model.dll.config
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\bin\Debug\EmployeeDetails.Model.dll
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\bin\Debug\EmployeeDetails.Model.pdb
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\bin\Debug\EntityFramework.dll
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\bin\Debug\EntityFramework.SqlServer.dll
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\bin\Debug\EntityFramework.xml
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\bin\Debug\EntityFramework.SqlServer.xml
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\obj\Debug\EmployeeDetails.Model.csprojAssemblyReference.cache
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\obj\Debug\EmployeeDetails.Model.csproj.CoreCompileInputs.cache
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\obj\Debug\EmployeeDetails.Model.csproj.CopyComplete
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\obj\Debug\EmployeeDetails.Model.dll
+D:\Milon\tbs-task1\EmployeeDetails\EmployeeDetails.Model\obj\Debug\EmployeeDetails.Model.pdb

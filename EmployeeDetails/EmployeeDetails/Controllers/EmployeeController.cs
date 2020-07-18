@@ -115,25 +115,37 @@ namespace EmployeeDetails.Controllers
                 Id = _EmployeeDetailsManager.AutoId(),
                 DOB = DateTime.Today
             };
+           // GetCities(2);
+            // GetThanas(4);
         }
 
         [HttpPost]
-        public JsonResult AjaxMethod(string type, int value)
+        public JsonResult AjaxMethod(string type, int value, string ip)
         {
            switch(type) 
             {
                 case "Division_Id":
-                    employee.Cities = _EmployeeDetailsManager.GetCities(value)
-                        .Select(p => new SelectListItem() { Value = p.Id.ToString(), Text = p.CityName }
-                        ).ToList();
+                    GetCities(value);
                     break;
                 case "CityId":
-                   employee.Thanas = _EmployeeDetailsManager.GetThanas(value)
-                        .Select(p => new SelectListItem() { Value = p.Id.ToString(), Text = p.ThanaName}
-                        ).ToList();
+                   GetThanas(value);
                     break;
             }
             return Json(employee);
+        }
+
+        private void GetThanas(int value)
+        {
+            employee.Thanas = _EmployeeDetailsManager.GetThanas(value)
+                .Select(p => new SelectListItem() {Value = p.Id.ToString(), Text = p.ThanaName}
+                ).ToList();
+        }
+
+        private void GetCities(int value)
+        {
+            employee.Cities = _EmployeeDetailsManager.GetCities(value)
+                .Select(p => new SelectListItem() {Value = p.Id.ToString(), Text = p.CityName}
+                ).ToList();
         }
 
         [HttpPost]
@@ -172,6 +184,12 @@ namespace EmployeeDetails.Controllers
 
 
             return Json(employeeView);
+        }
+
+        [HttpPost]
+        public JsonResult GetIp(dynamic ip)
+        {
+            return Json("");
         }
     }
 }
